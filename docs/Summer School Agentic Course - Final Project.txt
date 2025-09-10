@@ -1,0 +1,49 @@
+Summer School Agentic Course - Final Project
+
+- What - Làm về cái gì:
+  +) Title: RA4U - Research Assistant 4 you
+  +) Expectation: Research Assitant có thể cung cấp chính xác các paper liên quan, đồng thời phân tích và tạo ra được Research Gap.
+  +) Requiriments:
+	1. Giảm thiểu ảo giác, không xuyên tạc các Paper không có hoặc nội dung của các Paper
+	2. Báo cáo nghiên cứu hay output của Assitant sẽ có trình tự logic lần lượt từ các Related works => Limitation => Gap.
+	3. Lý do chọn các paper này là related work (sự tương đồng về topic, hội nghị hàng đầu, số lượng citation,...)
+
+- When - Khi nào thì sử dụng:
+  +) Khi research mà lười đọc hàng trăm paper :D
+
+- Why - Tại sao lại lựa chọn đề tài này: 
+  +) Lý do chọn Research Gap: Trong vòng lặp của nghiên cứu, trước khi đi vào giải pháp độc đáo thì việc phân tích và tìm kiếm problem hay Research Gap sẽ là 1 trong những bước quan trọng nhất (dãn xuất câu nói kinh điển của Einstein: Nếu cho tôi 1 giờ .....)
+  +) Nâng cao hiệu suất cho Researcher bằng việc tận dụng khả năng của LLMs
+  +) Problem của các giải pháp hiện tại (Scholar AI - ChatGPT): Hiện tượng Paper Hallicination khi xuyên tạc ra các Paper ko tồn tại hoặc nội dung của các Paper.
+	
+- Which - Công nghệ nào:
+  +) Agentic AI
+  +) LLMs
+  +) RAG
+  +) ...
+
+- Who - trình bày tới ai:
+  +) Học viên - Học viên muốn nghe gì ?: 
+	1. Bài toán mình đang giải quyết
+	2. Công nghệ mình sử dụng để giải quyết bài toán
+	3. Giải pháp
+	3. Demo vui mắt vui tai
+  +) Diễn giả/Giáo viên - Các thầy quan tầm điều gì ?:
+	1. Bài toán mình đang giải quyết 
+	2. Giải pháp
+	3. Những đóng góp của giải pháp (đóng góp càng nhiều càng chính xác thì tiềm năng paper càng cao => thầy qtam :D)
+
+
+- How - làm thế nào:
+  +) Requiriment 1: Xử dụng cơ chế tự đánh giá, sau khi có kết quả về list các related works thay vì trả cho user thì sẽ nhờ một agent khác verify lại
+  +) Requirement 2: 
+	1. Related works: Sử dụng Searching Tools
+	2. Limitation: Sử dụng cơ chế tính điểm tìm ra N bài mới nhất và có score hay độ tương đồng với topic cao nhất rồi tương đương là có N agent lần lượt đọc từng bài và tìm ra Limitation
+	3. Research Gap: Từ các Limitation trên, đề xuất ra các Research Gap hay các bài toán con trong topic mà chưa được giải quyết.
+  +) Requirement 3: To-be-define
+  +) Demo: User nhập topic muốn tìm kiếm (topic có thể được gợi ý dựa trên văn bản người dùng nhập), Research Assistant sẽ tìm kiếm và tổng hợp thông tin rồi cho ra Research Gap cuối cùng của topic đó.
+
+- Other:
+  +) Một số ý tưởng, bài toán khác:
+	1. Thực trạng dùng AI có thể khiến người dùng giảm khả năng tư duy, làm sao để việc sử dụng AI vẫn tăng năng suất nhưng kích thích người dùng tư duy
+	2. Agent AI kết hợp với CV: Giao thông thông minh, Nhà máy thông minh,...
