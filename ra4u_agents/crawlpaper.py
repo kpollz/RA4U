@@ -53,7 +53,7 @@ class ScholarCrawler:
                 'PLDI', 'POPL', 'OOPSLA', 'ISCA', 'MICRO', 'ASPLOS', 'CHI', 'UIST',
                 'ICSE', 'FSE', 'ASE', 'ISSTA', 'CCS', 'NDSS', 'USENIX Security',
                 'S&P', 'CRYPTO', 'EUROCRYPT', 'ASIACRYPT', 'TCC', 'STOC', 'FOCS',
-                'SODA', 'ICALP', 'ESA', 'SPAA', 'PODC', 'DISC'
+                'SODA', 'ICALP', 'ESA', 'SPAA', 'PODC', 'DISC', 'EMNLP', 'ACL', 'EACL', 'AACL', 'COLING', 'NAACL'
             ],
             'biology': [
                 'Nature', 'Science', 'Cell', 'PNAS', 'Nature Biotechnology',
