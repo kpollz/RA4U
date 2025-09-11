@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 from crewai import Agent, Task, Crew, Process, LLM
 from utils import LinkUpSearchTool
+from ra4u_agents.writer import create_writer_agent
 
 # Load environment variables (for non-LinkUp settings)
 load_dotenv()
@@ -31,14 +32,15 @@ def init_agents():
     )
 
     # Define the technical writer
-    technical_writer = Agent(
-        role="Technical Writer",
-        goal="Create well-structured, clear, and comprehensive responses in markdown format, with citations/source links (urls). The structure should include an introduction, limitation, research gap and future research.",
-        backstory="An expert at communicating complex information in an accessible way.",
-        verbose=True,
-        allow_delegation=False,
-        llm=LLM_CLIENT,
-    )
+    # technical_writer = Agent(
+    #     role="Technical Writer",
+    #     goal="Create well-structured, clear, and comprehensive responses in markdown format, with citations/source links (urls). The structure should include an introduction, limitation, research gap and future research.",
+    #     backstory="An expert at communicating complex information in an accessible way.",
+    #     verbose=True,
+    #     allow_delegation=False,
+    #     llm=LLM_CLIENT,
+    # )
+    technical_writer = create_writer_agent(llm=LLM_CLIENT)
     return web_searcher, research_analyst, technical_writer
 
 

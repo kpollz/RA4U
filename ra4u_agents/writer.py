@@ -9,7 +9,7 @@ def create_writer_agent(*, llm: Optional[LLM] = None, model: Optional[str] = Non
 	client = llm if llm is not None else LLM(model=model or os.getenv("WRITER_LLM_MODEL", "gemini/gemini-2.0-flash"))
 
 	return Agent(
-		role="Writer",
+		role="Technical Writer",
 		goal=(
 			"Transform the Reader's extracted findings into a coherent, well-structured"
 			" research report in markdown using ONLY the Reader output as the factual"
@@ -23,7 +23,7 @@ def create_writer_agent(*, llm: Optional[LLM] = None, model: Optional[str] = Non
 			"- ## Related works: Synthesize insights across ALL works collectively (themes,"
 			" methods, outcomes). Compare/contrast approaches, highlight commonalities and"
 			" divergences. If sources/links are present, include inline citations. Avoid"
-			" per-paper mini-summaries; focus on cross-paper synthesis." "\n"
+			" per-paper mini-summaries; focus on cross-paper synthesis. The format is table that has 3 field: Name, Description, Url." "\n"
 			"- ## Limitation: Aggregate limitations across the works (methodology, data,"
 			" evaluation, generalization). Deduplicate and group similar limitations;"
 			" provide a concise, collective view." "\n"

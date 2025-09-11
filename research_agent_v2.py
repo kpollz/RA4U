@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from crewai import Agent, Task, Crew, Process, LLM
-from crewai_tools import SerperDevTool
+from utils import LinkUpSearchTool
 from ra4u_agents.writer import create_writer_agent
 from typing import Callable, Optional
 
@@ -8,31 +8,31 @@ from typing import Callable, Optional
 load_dotenv()
 
 LLM_CLIENT = LLM(model="gemini/gemini-2.0-flash")
-SERPER_DEV_TOOL = SerperDevTool()
+LINKUP_SEARCH_TOOL = LinkUpSearchTool()
 
 
 def init_agents(callback: Optional[Callable] = None):
     """Initialize agents with progress tracking"""
     if callback:
-        callback("Article Crawler", "initializing", "Initializing Web Search Agent...")
+        callback("Web Searcher", "initializing", "Initializing Web Search Agent...")
     
-    crawler = Agent(
-        role="Article Crawler",
+    web_searcher = Agent(
+        role="Web Searcher",
         goal="Find the 10 most relevant scientific articles on the web (conferences, top scientific research journals,...), along with source links (urls).",
-        backstory="An expert at formulating search queries and retrieving relevant information. Passes the results to the 'Article Reader' only.",
+        backstory="An expert at formulating search queries and retrieving relevant information. Passes the results to the 'Research Analyst' only.",
         verbose=True,
         allow_delegation=True,
-        tools=[SERPER_DEV_TOOL],
+        tools=[LINKUP_SEARCH_TOOL],
         llm=LLM_CLIENT,
     )
 
     if callback:
-        callback("Article Reader", "initializing", "Initializing Research Analysis Agent...")
+        callback("Research Analyst", "initializing", "Initializing Research Analysis Agent...")
     
-    reader = Agent(
-        role="Article Reader",
+    research_analyst = Agent(
+        role="Research Analyst",
         goal="Analyze and synthesize raw information about current limitation into structured insights, along with source links (urls) as citations.",
-        backstory="An expert at analyzing information, identifying patterns, and extracting key insights. If required, can delagate the task of fact checking/verification to 'Article Crawler' only. Passes the final results to the 'Technical Writer' only.",
+        backstory="An expert at analyzing information, identifying patterns, and extracting key insights. If required, can delagate the task of fact checking/verification to 'Web Searcher' only. Passes the final results to the 'Technical Writer' only.",
         verbose=True,
         allow_delegation=True,
         llm=LLM_CLIENT,
@@ -41,35 +41,35 @@ def init_agents(callback: Optional[Callable] = None):
     if callback:
         callback("Technical Writer", "initializing", "Initializing Technical Writer Agent...")
     
-    writer = create_writer_agent(llm=LLM_CLIENT)
-    return crawler, reader, writer
+    technical_writer = create_writer_agent(llm=LLM_CLIENT)
+    return web_searcher, research_analyst, technical_writer
 
 
-def create_research_crew(query: str, crawler=None, reader=None, writer=None, callback: Optional[Callable] = None) -> Crew:
+def create_research_crew(query: str, web_searcher=None, research_analyst=None, technical_writer=None, callback: Optional[Callable] = None) -> Crew:
     """Create and configure the research crew with all agents and tasks"""
 
     # Define tasks with progress tracking
     search_task = Task(
         description=f"Search for comprehensive information about: {query}.",
-        agent=crawler,
+        agent=web_searcher,
         expected_output="Detailed raw search results including sources (urls).",
-        tools=[SERPER_DEV_TOOL],
-        on_start=lambda: callback("Article Crawler", "started", f"Starting web search for: {query}") if callback else None,
-        on_end=lambda: callback("Article Crawler", "completed", "Web search completed") if callback else None,
+        tools=[LINKUP_SEARCH_TOOL],
+        on_start=lambda: callback("Web Searcher", "started", f"Starting web search for: {query}") if callback else None,
+        on_end=lambda: callback("Web Searcher", "completed", "Web search completed") if callback else None,
     )
 
     analysis_task = Task(
         description="Analyze the raw search results, identify key limitation, verify facts and prepare a structured analysis.",
-        agent=reader,
+        agent=research_analyst,
         expected_output="A structured analysis of the limitation with verified facts and key insights, along with source links",
         context=[search_task],
-        on_start=lambda: callback("Article Reader", "started", "Starting research analysis") if callback else None,
-        on_end=lambda: callback("Article Reader", "completed", "Research analysis completed") if callback else None,
+        on_start=lambda: callback("Research Analyst", "started", "Starting research analysis") if callback else None,
+        on_end=lambda: callback("Research Analyst", "completed", "Research analysis completed") if callback else None,
     )
 
     writing_task = Task(
         description="Create a comprehensive, well-organized response based on the research analysis.",
-        agent=writer,
+        agent=technical_writer,
         expected_output="A clear, comprehensive response that directly answers the query with proper citations/source links (urls).",
         context=[analysis_task],
         on_start=lambda: callback("Technical Writer", "started", "Starting technical writing") if callback else None,
@@ -78,7 +78,7 @@ def create_research_crew(query: str, crawler=None, reader=None, writer=None, cal
 
     # Create the crew
     crew = Crew(
-        agents=[crawler, reader, writer],
+        agents=[web_searcher, research_analyst, technical_writer],
         tasks=[search_task, analysis_task, writing_task],
         verbose=True,
         process=Process.sequential
